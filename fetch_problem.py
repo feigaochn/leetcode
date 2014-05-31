@@ -1,9 +1,10 @@
 #! /usr/local/bin/python3
 
-import httplib2
 import re
 import sys
 import time
+
+import httplib2
 
 
 def get_name():
@@ -104,6 +105,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
             "def main():\n" + \
             "    pass\n\n\n" + \
             "if __name__ == '__main__':\n" + \
+            "    solver = Solution()" + \
             "    pass\n"
 
         f.write(main_func)
