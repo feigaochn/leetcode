@@ -1,4 +1,4 @@
 leetcode
 ========
 
-My Python practice of leetcode
+My Python practice of [leetcode](https://oj.leetcode.com).
