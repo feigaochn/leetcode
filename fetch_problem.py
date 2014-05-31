@@ -90,7 +90,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
         f.write('# date: ' + time.asctime() + '\n#\n')
 
         # problem description
-        f.write('# ' + problem_name.replace('-', ' ').capitalize() + '\n#\n')
+        f.write('# ' + ' '.join([word.capitalize() for word in problem_name.split('-')]) + '\n#\n')
         for line in question_lines:
             f.write("# " + line + '\n')
         f.write('\n\n')
@@ -105,7 +105,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
             "def main():\n" + \
             "    pass\n\n\n" + \
             "if __name__ == '__main__':\n" + \
-            "    solver = Solution()" + \
+            "    solver = Solution()\n" + \
             "    pass\n"
 
         f.write(main_func)
