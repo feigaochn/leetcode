@@ -106,6 +106,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
             "    solver = Solution()\n" + \
             "    pass\n\n\n" + \
             "if __name__ == '__main__':\n" + \
+            "    main()" + \
             "    pass\n"
 
         f.write(main_func)
