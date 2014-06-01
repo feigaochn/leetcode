@@ -87,6 +87,24 @@ class TreeNode:
                 cur_depth = next_depth
         return depth
 
+    def max_depth(self):
+        """
+        find maximum depth of root
+        """
+        # bfs
+        depth = 0
+        cur_depth = [self]
+        while len(cur_depth) != 0:
+            next_depth = []
+            for node in cur_depth:
+                if node.left is not None:
+                    next_depth.append(node.left)
+                if node.right is not None:
+                    next_depth.append(node.right)
+            depth += 1
+            cur_depth = next_depth
+        return depth
+
     def build_from_list(self, lst):
         if lst is []:
             return TreeNode()
