@@ -12,7 +12,7 @@ def get_name():
     if len(names) > 0:
         problem_name = str('-'.join([name.lower() for name in names]))
     else:
-        problem_name = str(input("Input problem name: ")).lower().replace(' ', '-')
+        problem_name = str(input("Input problem name: ")).lower().strip().replace(' ', '-')
     return problem_name
 
 
@@ -106,7 +106,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
             "    solver = Solution()\n" + \
             "    pass\n\n\n" + \
             "if __name__ == '__main__':\n" + \
-            "    main()" + \
+            "    main()\n" + \
             "    pass\n"
 
         f.write(main_func)
