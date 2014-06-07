@@ -1,9 +1,11 @@
 #! /usr/local/bin/python3
+# TODO
+# 1. generate easier testing unit
+# 2. 'ii' or 'iii' etc. in title
 
 import re
 import sys
 import time
-
 import httplib2
 
 
@@ -12,7 +14,10 @@ def get_name():
     if len(names) > 0:
         problem_name = str('-'.join([name.lower() for name in names]))
     else:
-        problem_name = str(input("Input problem name: ")).lower().strip().replace(' ', '-')
+        problem_name = str(
+            input("Input problem name: ")).lower().strip().replace(
+            ' ',
+            '-')
     return problem_name
 
 
@@ -83,14 +88,21 @@ def parse_page(page):
 def generate_source_file(problem_name, question_lines, code_lines):
     try:
         # exclusively open
-        f = open(problem_name + '.py', mode='x', encoding='utf-8', newline='\n')
+        f = open(
+            problem_name +
+            '.py',
+            mode='x',
+            encoding='utf-8',
+            newline='\n')
 
         # header
         f.write("# author: Fei Gao\n")
-        f.write('# date: ' + time.asctime() + '\n#\n')
+        # f.write('# date: ' + time.asctime() + '\n')
+        f.write('#\n')
 
         # problem description
-        f.write('# ' + ' '.join([word.capitalize() for word in problem_name.split('-')]) + '\n#\n')
+        f.write('# ' + ' '.join([word.capitalize()
+                for word in problem_name.split('-')]) + '\n#\n')
         for line in question_lines:
             f.write("# " + line + '\n')
         f.write('\n\n')
@@ -104,6 +116,13 @@ def generate_source_file(problem_name, question_lines, code_lines):
         main_func = \
             "def main():\n" + \
             "    solver = Solution()\n" + \
+            "    tests = []\n" + \
+            "    for test in tests:\n" + \
+            "        print(test)\n" + \
+            "        print(' ->')\n" + \
+x`x`            "        result = solver.__(test)\n" + \
+            "        print(result)\n" + \
+            "        print('~'*10)\n" + \
             "    pass\n\n\n" + \
             "if __name__ == '__main__':\n" + \
             "    main()\n" + \

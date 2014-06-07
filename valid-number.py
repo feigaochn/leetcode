@@ -1,0 +1,35 @@
+# author: Fei Gao
+#
+# Valid Number
+#
+# Validate if a given string is numeric.
+# Some examples:
+# "0" => true
+# "   0.1  " => true
+# "abc" => false
+# "1 a" => false
+# "2e10" => true
+# Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one.
+
+
+class Solution:
+    # @param s, a string
+    # @return a boolean
+    def isNumber(self, s):
+        try:
+            float(s)
+            return True
+        except:
+            return False
+
+
+def main():
+    solver = Solution()
+    for s in ['0', '  0.1', 'ab', '1 b', '2e10', '-0']:
+        print(s, solver.isNumber(s))
+    pass
+
+
+if __name__ == '__main__':
+    main()
+    pass

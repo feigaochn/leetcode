@@ -21,7 +21,7 @@ class Solution:
     def minDepth(self, root):
         return self.min_depth(root) if root is not None else 0
 
-    # copy from node.py
+    # copy from node module
     def min_depth(self, root):
         """
         find minimum depth of self

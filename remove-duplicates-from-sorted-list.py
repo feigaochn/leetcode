@@ -1,12 +1,7 @@
 #!/usr/local/bin/python3
 # Definition for singly-linked list.
 
-
-class ListNode:
-
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+from node.sllist import ListNode
 
 
 class Solution:
@@ -37,7 +32,7 @@ def test():
 
     # print origin
     p = head
-    while (p is not None):
+    while p is not None:
         print(p.val, end='->')
         p = p.next
     print('\n')
@@ -46,7 +41,7 @@ def test():
 
     # print result
     sp = shead
-    while (sp is not None):
+    while sp is not None:
         print(sp.val, end='->')
         sp = sp.next
     print('\n')

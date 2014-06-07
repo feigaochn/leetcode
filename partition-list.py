@@ -1,10 +1,21 @@
-from node import ListNode
+# Given a linked list and a value x, partition it such that
+# all nodes less than x come before nodes greater than or equal to x.
+#
+# You should preserve the original relative order of the nodes in each
+# of the two partitions.
+#
+# For example,
+# Given 1->4->3->2->5->2 and x = 3,
+# return 1->2->2->4->3->5.
+
+from node.sllist import ListNode
 
 
 class Solution:
     # @param head, a ListNode
     # @param x, an integer
     # @return a ListNode
+
     def partition(self, head, x):
         less_head = None
         less_tail = None
@@ -32,7 +43,6 @@ class Solution:
         else:
             less_tail.next = more_head
             return less_head
-        pass
 
 
 def test():
