@@ -1,11 +1,11 @@
-#! /usr/local/bin/python3
+# ! /usr/local/bin/python3
 # TODO
 # 1. generate easier testing unit
 # 2. 'ii' or 'iii' etc. in title
 
 import re
 import sys
-import time
+
 import httplib2
 
 
@@ -102,7 +102,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
 
         # problem description
         f.write('# ' + ' '.join([word.capitalize()
-                for word in problem_name.split('-')]) + '\n#\n')
+                                 for word in problem_name.split('-')]) + '\n#\n')
         for line in question_lines:
             f.write("# " + line + '\n')
         f.write('\n\n')
@@ -120,7 +120,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
             "    for test in tests:\n" + \
             "        print(test)\n" + \
             "        print(' ->')\n" + \
-x`x`            "        result = solver.__(test)\n" + \
+            "        result = solver.__(test)\n" + \
             "        print(result)\n" + \
             "        print('~'*10)\n" + \
             "    pass\n\n\n" + \
