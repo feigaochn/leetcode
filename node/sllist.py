@@ -12,6 +12,9 @@ class ListNode(object):
         self.next = None
         self.val = x
 
+    def __repr__(self):
+        return repr(self.val)
+
 
 class SinglyLinkedList(object):
     """
@@ -28,6 +31,8 @@ class SinglyLinkedList(object):
         self.head = None
         if isinstance(x, list):
             self.build_from_list(x)
+        elif isinstance(x, ListNode):
+            self.head = x
         else:
             self.head = ListNode(x)
 
@@ -69,11 +74,15 @@ class SinglyLinkedList(object):
     def sort(self):
         """In place sort
         """
-        raise NotImplemented
+        # TODO:
+        # 1. insertion sort
+        # 2. O(n log n) time and O(1) space
+        raise NotImplementedError
 
     def reverse(self):
         """In-place reverse
         """
+        # TODO: reverse a part of list
         p = self.head
         if not p or not p.next:
             return p
@@ -93,8 +102,12 @@ class SinglyLinkedList(object):
     def __str__(self):
         return 'sll: ' + ' -> '.join(repr(v) for v in self.values())
 
+    def __eq__(self, other):
+        raise NotImplementedError
+
     @property
     def has_cycle(self):
+        # TODO: return cycle start index and length
         head = self.head
         if head is None:
             return False
@@ -127,3 +140,101 @@ class SinglyLinkedList(object):
                 h = p
             p = p.next
         h.next = None
+
+    def pop(self, index=0):
+        """
+        :param index:
+        :return: LinkNode
+        """
+        if index < 0:
+            return self.pop_from_end(-index)
+        else:
+            return self.pop_from_begin(index)
+
+    def pop_from_end(self, n=1):
+        """Remove the n-th node from end (starting from 1)
+        In place, one pass
+        :param n: n > 0
+        :return:
+        """
+        # let ph be 1st, pn be n-th
+        ph = self.head
+        pn = self.head
+        i = 1
+        while pn.next is not None and i < n:
+            pn = pn.next
+            i += 1
+        # print(i, pn)
+        # len < n
+        if i < n:
+            raise IndexError('linked list index out of range')
+        # len == n
+        if i == n and pn.next is None:
+            self.head = self.head.next
+            return ph
+
+        # len > n
+        # let pn be (n+1)-st
+        pn = pn.next
+        # pn be last 1-st
+        while pn.next is not None:
+            pn = pn.next
+            ph = ph.next
+        # now ph is the last (n+1)-st
+        ret = ph.next
+        ph.next = ph.next.next
+        return ret
+
+    def pop_from_begin(self, n=0):
+        """Remove the n-th node from start (starting from 0)
+        In place, one pass
+        :param n: n >= 0
+        :return:
+        """
+        raise NotImplementedError
+        # let ph be 0-th, pn be (n-2)-th
+        ph = self.head
+        pn = self.head
+        i = 0
+        while pn.next is not None and i < n - 2:
+            pn = pn.next
+            i += 1
+        print(n, i, pn)
+        return
+        # len < n
+        if i < n:
+            raise IndexError('linked list index out of range')
+        # len == n
+        if i == n and pn.next is None:
+            self.head = self.head.next
+            return ph
+
+        # len > n
+        # let pn be (n+1)-st
+        pn = pn.next
+        # pn be last 1-st
+        while pn.next is not None:
+            pn = pn.next
+            ph = ph.next
+        # now ph is the last (n+1)-st
+        ret = ph.next
+        ph.next = ph.next.next
+        return ret
+
+    def merge(self, other):
+        """ Merge two sorted linked list
+        :param other: sorted link list
+        :return: sorted link list
+        """
+        raise NotImplementedError
+
+    def merge_k_sorted(self, others):
+        """ Merge k sorted linked lists and return it as one sorted list
+        """
+        raise NotImplementedError
+
+    def rotate(self, shift=0):
+        """in place rotation
+        :param shift:
+        :return:
+        """
