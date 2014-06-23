@@ -1,11 +1,10 @@
-# ! /usr/local/bin/python3
+#!/usr/bin/env python3
 # TODO
 # 1. generate easier testing unit
 # 2. 'ii' or 'iii' etc. in title
 
 import re
 import sys
-
 import httplib2
 
 
