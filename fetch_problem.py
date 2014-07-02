@@ -83,21 +83,40 @@ def parse_page(page):
 
     return question_lines, code_lines
 
+header = '''#!/bin/env python3
+
+# author: Fei Gao
+#
+'''
+
+main_func = '''
+
+def main():
+    solver = Solution()
+    tests = []
+    for test in tests:
+        print(test)
+        print(' ->')
+        result = solver.__(test)
+        print(result)
+        print('~'*10)
+    pass
+if __name__ == '__main__':
+    main()
+    pass
+'''
+
 
 def generate_source_file(problem_name, question_lines, code_lines):
     try:
         # exclusively open
-        f = open(
-            problem_name +
-            '.py',
-            mode='x',
-            encoding='utf-8',
-            newline='\n')
+        f = open(problem_name + '.py',
+                 mode='x',
+                 encoding='utf-8',
+                 newline='\n')
 
         # header
-        f.write("# author: Fei Gao\n")
-        # f.write('# date: ' + time.asctime() + '\n')
-        f.write('#\n')
+        f.write(header)
 
         # problem description
         f.write('# ' + ' '.join([word.capitalize()
@@ -111,23 +130,8 @@ def generate_source_file(problem_name, question_lines, code_lines):
             f.write(line + '\n')
 
         # main function
-        f.write('\n\n')
-        main_func = \
-            "def main():\n" + \
-            "    solver = Solution()\n" + \
-            "    tests = []\n" + \
-            "    for test in tests:\n" + \
-            "        print(test)\n" + \
-            "        print(' ->')\n" + \
-            "        result = solver.__(test)\n" + \
-            "        print(result)\n" + \
-            "        print('~'*10)\n" + \
-            "    pass\n\n\n" + \
-            "if __name__ == '__main__':\n" + \
-            "    main()\n" + \
-            "    pass\n"
-
         f.write(main_func)
+
         f.close()
         response = "Success"
 
