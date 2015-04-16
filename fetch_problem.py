@@ -81,6 +81,9 @@ def parse_page(page):
                     line_clean = re.sub(r'^\s*', '', line_clean)
                 code_lines.append(line_clean)
 
+    # the structure is changed for default code
+    code_lines = re.findall(r"'text': 'Python', 'defaultCode': '(.*?)' },", page)[0]
+    code_lines = code_lines.replace('\\u000D\\u000A', '\n').splitlines()
     return question_lines, code_lines
 
 header = '''#!/bin/env python3
