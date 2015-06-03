@@ -84,8 +84,9 @@ def parse_page(page):
 
     # the structure is changed for default code
     code_lines = re.findall(r"'text': 'Python', 'defaultCode': '(.*?)' },", page)[0]
-    code_lines = code_lines.replace('\\u000D\\u000A', '\n').strip().splitlines()
-    code_lines.append(' ' * 8 + 'return')
+    code_lines = code_lines.strip().encode().decode('unicode_escape')
+    code_lines = code_lines.splitlines()
+    code_lines.append(' ' * 8 + 'return None')
     return question_lines, code_lines
 
 
@@ -120,7 +121,7 @@ if __name__ == '__main__':
 def generate_source_file(problem_name, question_lines, code_lines, method_name):
     try:
         # exclusively open
-        f = open(problem_name + '.py',
+        f = open(problem_name.replace('-', '_') + '.py',
                  mode='x',
                  encoding='utf-8',
                  newline='\n')
@@ -130,7 +131,7 @@ def generate_source_file(problem_name, question_lines, code_lines, method_name):
 
         # problem description
         f.write('# ' + ' '.join([word.capitalize()
-                                 for word in problem_name.split('-')]) + '\n#\n')
+                                 for word in problem_name.split('-')]) + '\n\n')
         for line in question_lines:
             f.write("# " + line + '\n')
         f.write('\n\n')
