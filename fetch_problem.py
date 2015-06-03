@@ -5,6 +5,7 @@
 
 import re
 import sys
+
 import httplib2
 
 
@@ -83,10 +84,12 @@ def parse_page(page):
 
     # the structure is changed for default code
     code_lines = re.findall(r"'text': 'Python', 'defaultCode': '(.*?)' },", page)[0]
-    code_lines = code_lines.replace('\\u000D\\u000A', '\n').splitlines()
+    code_lines = code_lines.replace('\\u000D\\u000A', '\n').strip().splitlines()
+    code_lines.append(' ' * 8 + 'return')
     return question_lines, code_lines
 
-header = '''#!/bin/env python3
+
+header = '''# coding: utf-8
 
 # author: Fei Gao
 #
@@ -100,17 +103,19 @@ def main():
     for test in tests:
         print(test)
         print(' ->')
-        result = solver.__(test)
+        result = solver.{method}(test)
         print(result)
         print('~'*10)
     pass
+
+
 if __name__ == '__main__':
     main()
     pass
 '''
 
 
-def generate_source_file(problem_name, question_lines, code_lines):
+def generate_source_file(problem_name, question_lines, code_lines, method_name):
     try:
         # exclusively open
         f = open(problem_name + '.py',
@@ -133,7 +138,7 @@ def generate_source_file(problem_name, question_lines, code_lines):
             f.write(line + '\n')
 
         # main function
-        f.write(main_func)
+        f.write(main_func.format(method=method_name))
 
         f.close()
         response = "Success"
@@ -142,6 +147,20 @@ def generate_source_file(problem_name, question_lines, code_lines):
         response = "ERROR: File Exists"
 
     return response
+
+
+def retrive_method(code_lines):
+    """
+
+    :param code_lines:
+    :type code_lines: str
+    :return:
+    :rtype:
+    """
+    for line in code_lines:
+        method = re.findall(r'def ([a-zA-Z0-9]+)\(self', line)
+        if method:
+            return method[0]
 
 
 def main():
@@ -168,7 +187,8 @@ def main():
         response = "Maybe Some Error"
     print("Parse Page: " + response)
 
-    response = generate_source_file(problem_name, question_lines, code_lines)
+    method_name = retrive_method(code_lines)
+    response = generate_source_file(problem_name, question_lines, code_lines, method_name)
     print("Generate .py File: " + response)
 
     print('\n>>> Done' + separator)
