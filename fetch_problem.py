@@ -99,11 +99,13 @@ main_func = '''
 
 def main():
     solver = Solution()
-    tests = []
+    tests = [
+        ( ,)
+    ]
     for test in tests:
         print(test)
         print(' ->')
-        result = solver.{method}(test)
+        result = solver.{method}(*test)
         print(result)
         print('~'*10)
     pass
