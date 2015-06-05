@@ -86,7 +86,7 @@ def parse_page(page):
     code_lines = re.findall(r"'text': 'Python', 'defaultCode': '(.*?)' },", page)[0]
     code_lines = code_lines.strip().encode().decode('unicode_escape')
     code_lines = code_lines.splitlines()
-    code_lines.append(' ' * 8 + 'return None')
+    code_lines.append(' ' * 8 + 'return True')
     return question_lines, code_lines
 
 
@@ -101,7 +101,7 @@ main_func = '''
 def main():
     solver = Solution()
     tests = [
-        ( ,)
+        (,)
     ]
     for test in tests:
         print(test)
