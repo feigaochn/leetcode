@@ -6,7 +6,7 @@
 import re
 import sys
 
-import httplib2
+import requests
 
 
 def get_name():
@@ -22,13 +22,12 @@ def get_name():
 
 
 def get_page(url):
-    h = httplib2.Http('.cache')
-    response, contents = h.request(url)
-    if response['status'] == '200':
-        return "Success", contents.decode('utf-8')
+    r = requests.get(url)
+    if r.ok:
+        return "Success", r.text
     else:
         # error getting page
-        return "ERROR", contents.decode('utf-8')
+        return "ERROR", r.text
 
 
 def parse_page(page):
