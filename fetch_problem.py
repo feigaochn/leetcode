@@ -1,113 +1,39 @@
 #!/usr/bin/env python3
-# TODO
-# 1. generate easier testing unit
-# 2. 'ii' or 'iii' etc. in title
 
+import logging
 import re
 import sys
 
+import bs4
 import requests
 
+logging.basicConfig(level=logging.WARNING)
 
-def get_name():
-    names = sys.argv[1:]
-    if len(names) > 0:
-        problem_name = str('-'.join([name.lower() for name in names]))
-    else:
-        problem_name = str(
-            input("Input problem name: ")).lower().strip().replace(
-            ' ',
-            '-')
-    return problem_name
+BASE_URL = 'https://oj.leetcode.com/problems/'
 
+TEMPLATE = '''# coding: utf-8
 
-def get_page(url):
-    r = requests.get(url)
-    if r.ok:
-        return "Success", r.text
-    else:
-        # error getting page
-        return "ERROR", r.text
+# author: Fei Gao <leetcode.com@feigao.xyz>
 
-
-def parse_page(page):
-    lines = page.splitlines()
-    question_lines = []
-    code_lines = []
-    is_question = False
-    is_code = False
-    is_pre = False
-    for line in lines:
-
-        # get_description(): contents between
-        # <div class="question-content">
-        # and
-        # the first </div>
-        if line.find("question-content") != -1:
-            is_question = True
-
-        if is_question:
-            if line.find('<pre>') != -1:
-                is_pre = True
-            # remove labels <?>
-            line_clean = re.sub(r'<.*?>', '', line)
-            if is_pre is False:
-                line_clean = re.sub(r'^\s*', '', line_clean)
-            # only add non-empty line
-            if line_clean.replace(' ', '') != '':
-                question_lines.append(line_clean)
-            if line.find('</pre>') != -1:
-                is_pre = False
-            if line.find('</div>') != -1:
-                is_question = False
-
-        # get_code(): contents between
-        # <textarea class="form-control python" rows="20">
-        # and
-        # </textarea>
-        if line.find("form-control python") != -1:
-            is_code = True
-        if is_code:
-            if line.find('</textarea>') != -1:
-                is_code = False
-                # this is last in of code template
-                # put a `pass` here
-                code_lines.append(' ' * 8 + '# TODO')
-                code_lines.append(' ' * 8 + 'pass')
-            else:
-                # remove any labels <?>
-                line_clean = re.sub(r'<.*?>', '', line)
-                if line_clean.find('Solution') != -1:
-                    line_clean = re.sub(r'^\s*', '', line_clean)
-                code_lines.append(line_clean)
-
-    # the structure is changed for default code
-    code_lines = re.findall(r"'text': 'Python', 'defaultCode': '(.*?)' },", page)[0]
-    code_lines = code_lines.strip().encode().decode('unicode_escape')
-    code_lines = code_lines.splitlines()
-    code_lines.append(' ' * 8 + 'return True')
-    return question_lines, code_lines
-
-
-header = '''# coding: utf-8
-
-# author: Fei Gao
+# Problem: {name}
 #
-'''
+{description}
 
-main_func = '''
+{code}
+
 
 def main():
     solver = Solution()
     tests = [
-        (,)
+        (('param',), 'result'),
     ]
-    for test in tests:
-        print(test)
-        print(' ->')
-        result = solver.{method}(*test)
-        print(result)
-        print('~'*10)
+    for params, expect in tests:
+        print('-'*5 + 'TEST' + '-'*5)
+        print('Input:  ' + str(params))
+        print('Expect: ' + str(expect))
+
+        result = solver.{method}(*params)
+        print('Result: ' + str(result))
     pass
 
 
@@ -117,7 +43,41 @@ if __name__ == '__main__':
 '''
 
 
-def generate_source_file(problem_name, question_lines, code_lines, method_name):
+def get_name():
+    names = sys.argv[1:]
+    if names:
+        problem_name = '-'.join(word for word in names).lower()
+    else:
+        problem_name = input("Input problem name: ").strip().replace(' ', '-').lower()
+    logging.info('problem name: ' + problem_name)
+    return problem_name
+
+
+def parse_page(page, lang='Python'):
+    bs = bs4.BeautifulSoup(page, 'lxml')
+
+    # get description
+    desc = bs.find('div', {'class': 'question-content'}).text.replace('\r', '').strip('\n')
+    desc_split = desc.splitlines()
+    desc_lines = []
+    # remove double blank lines
+    for line in desc_split:
+        if desc_lines and line == '' == desc_lines[-1]:
+            continue
+        else:
+            desc_lines.append(line)
+    description = '\n'.join('# ' + line for line in desc_lines)
+
+    # get code template
+    ace = bs.find('form', {"ng-controller": "AceCtrl as aceCtrl"}).get('ng-init')
+    keys = [triple[1] for triple in re.findall(r"(\'|\")(.*?)(\1)", ace)]
+    code = keys[keys.index('defaultCode', keys.index(lang)) + 1].encode().decode('unicode_escape')
+    code += 'pass'
+
+    return description, code
+
+
+def generate_source_file(problem_name, description, code, method_name):
     try:
         # exclusively open
         f = open(problem_name.replace('-', '_') + '.py',
@@ -125,81 +85,40 @@ def generate_source_file(problem_name, question_lines, code_lines, method_name):
                  encoding='utf-8',
                  newline='\n')
 
-        # header
-        f.write(header)
-
-        # problem description
-        f.write('# ' + ' '.join([word.capitalize()
-                                 for word in problem_name.split('-')]) + '\n\n')
-        for line in question_lines:
-            f.write("# " + line + '\n')
-        f.write('\n\n')
-
-        # code template
-        for line in code_lines:
-            f.write(line + '\n')
-
-        # main function
-        f.write(main_func.format(method=method_name))
-
+        f.write(TEMPLATE.format(name=problem_name.replace('-', ' '),
+                                description=description,
+                                code=code,
+                                method=method_name
+                                ))
         f.close()
-        response = "Success"
-
     except FileExistsError:
-        response = "ERROR: File Exists"
+        logging.critical('file exists: ' + problem_name)
+        exit(1)
+    except Exception as e:
+        logging.critical('write file error: ' + str(e))
+        exit(1)
 
-    return response
 
-
-def retrive_method(code_lines):
-    """
-
-    :param code_lines:
-    :type code_lines: str
-    :return:
-    :rtype:
-    """
-    for line in code_lines:
-        method = re.findall(r'def ([a-zA-Z0-9]+)\(self', line)
-        if method:
-            return method[0]
+def guess_method(code):
+    method = re.findall(r'def ([a-zA-Z0-9_]+)\(self', code)
+    if method:
+        return method[0]
+    else:
+        logging.warning('fail to get method name')
 
 
 def main():
     problem_name = get_name()
-    # problem_name = 'spiral-matrix'
 
-    separator = '\n' + '-' * 20 + '\n'
+    response = requests.get(BASE_URL + problem_name)
+    logging.info('request page: ' + str(response.ok))
+    if not response.ok:
+        logging.critical('fail to request page')
+        exit(1)
 
-    print(separator + ">" * 3 + " Fetch Problem:\n")
-
-    print("Title: " + problem_name)
-
-    oj_prefix = 'https://oj.leetcode.com/problems/'
-    response, page = get_page(oj_prefix + problem_name)
-
-    print("Get Web Page: " + response)
-    if response == "ERROR":
-        return
-
-    question_lines, code_lines = parse_page(page)
-    if len(question_lines) > 0 and len(code_lines) > 0:
-        response = "Success"
-    else:
-        response = "Maybe Some Error"
-    print("Parse Page: " + response)
-
-    method_name = retrive_method(code_lines)
-    response = generate_source_file(problem_name, question_lines, code_lines, method_name)
-    print("Generate .py File: " + response)
-
-    print('\n>>> Done' + separator)
-
-    # print(separator + "Problem Description:\n")
-    # print('\n'.join(question_lines))
-    #
-    # print(separator + "Python Code Template:\n")
-    # print('\n'.join(code_lines))
+    description, codes = parse_page(response.text)
+    method_name = guess_method(codes)
+    generate_source_file(problem_name, description, codes, method_name)
 
 
 if __name__ == '__main__':
