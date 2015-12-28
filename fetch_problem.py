@@ -29,7 +29,7 @@ def main():
         (('param',), 'result'),
     ]
     for params, expect in tests:
-        print('-'*5 + 'TEST' + '-'*5)
+        print('-' * 5 + 'TEST' + '-' * 5)
         print('Input:  ' + str(params))
         print('Expect: ' + str(expect))
 
