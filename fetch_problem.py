@@ -62,11 +62,13 @@ def parse_page(page, lang='Python'):
     desc_split = desc.splitlines()
     desc_lines = []
     # remove double blank lines
+    import textwrap
     for line in desc_split:
         if desc_lines and line == '' == desc_lines[-1]:
             continue
         else:
-            desc_lines.append(line)
+            desc_lines.extend(textwrap.wrap(line, width=76) if line else [''])
+            # desc_lines.append(line)
     description = '\n'.join('# ' + line for line in desc_lines)
 
     # get code template
