@@ -43,7 +43,7 @@ class Solution:
     def drawSolutions(self, solution):
         draw = []
         for r in range(self.n):
-            draw.append('.'*solution[r]+'Q'+'.'*(self.n-1-solution[r]))
+            draw.append('.' * solution[r] + 'Q' + '.' * (self.n - 1 - solution[r]))
         return draw
 
     def recursiveSolve(self, partial, diag, anti_diag):
@@ -53,15 +53,16 @@ class Solution:
             return
         for val in range(self.n):
             if val not in partial \
-                    and val-idx not in diag \
-                    and val+idx not in anti_diag:
+                    and val - idx not in diag \
+                    and val + idx not in anti_diag:
                 partial.append(val)
-                diag.append(val-idx)
-                anti_diag.append(val+idx)
+                diag.append(val - idx)
+                anti_diag.append(val + idx)
                 self.recursiveSolve(partial, diag, anti_diag)
                 partial.pop()
                 diag.pop()
                 anti_diag.pop()
+
 
 if __name__ == '__main__':
     print(Solution().solveNQueens(4))
