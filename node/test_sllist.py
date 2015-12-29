@@ -5,29 +5,15 @@ from node.sllist import *
 
 
 def test_ListNode():
-    # tests = [list(range(n)) for n in range(5)] + [[(1, 2), (3, 4)]]
-    # for test in tests:
-    # print(test)
-    # node = ListNode(test)
-    #     print(node.values())
-    #     print(len(node))
+    l1 = ListNode(1)
+    assert l1.val == 1
+    assert l1.next == None
 
-    # sll = SinglyLinkedList([5, 4, 3, 2, 1])
-    # print(sll)
-    # sll.reverse()
-    # print(sll)
-
-    # sll = SinglyLinkedList([1, 1, 2, 3, 3][:2])
-    # print(sll)
-    # sll.unique()
-    # print(sll)
-
-    data = list(range(5))
-    for n in [0, 1, 2, 3, 4, 5, 6]:
-        sll = SinglyLinkedList(data)
-        print(sll)
-        sll.pop(n)
-        # print(sll)
+    l2 = ListNode([0, 1])
+    assert l2.val == 0
+    assert l2.next.val == 1
+    assert l2.next.next == None
+    assert l2.to_list() == [0, 1]
 
 
 if __name__ == '__main__':

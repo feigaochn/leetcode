@@ -2,18 +2,35 @@
 # Date: 7/6/14
 
 
-class ListNode(object):
+class ListNode:
     """singly-linked node
     """
+
     def __init__(self, x=None):
         """
         :rtype : object
         """
-        self.next = None
-        self.val = x
+        self.val = self.next = None
+        if isinstance(x, list):
+            if len(x) == 1:
+                self.val = x[0]
+                self.next = None
+            elif len(x) > 1:
+                self.val = x[0]
+                self.next = ListNode(x[1:])
+        else:
+            self.val = x
 
-    def __repr__(self):
-        return repr(self.val)
+    def to_list(self):
+        r = []
+        p = self
+        while p:
+            r.append(p.val)
+            p = p.next
+        return r
+
+    def __str__(self):
+        return str(self.to_list())
 
 
 class SinglyLinkedList(object):
