@@ -31,7 +31,19 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        return min(nums)
+        low = 0
+        hi = len(nums) - 1
+        while low <= hi:
+            if nums[low] == nums[hi]:
+                hi -= 1
+                continue
+            mi = (low + hi) // 2
+            # print(low, mi, hi)
+            if nums[mi] <= nums[hi]:
+                hi = mi
+            else:
+                low = mi + 1
+        return nums[low]
 
 
 def main():
@@ -42,6 +54,7 @@ def main():
         (([2, 3, 4, 0, 0, 1],), 0),
         (([2, 3, 4, 0, 1, 2],), 0),
         (([1, 0, 1, 1, 1],), 0),
+        (([0],), 0)
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
