@@ -72,7 +72,7 @@ def parse_page(page, lang='Python'):
     description = '\n'.join('# ' + line for line in desc_lines)
 
     # get code template
-    ace = bs.find('form', {"ng-controller": "AceCtrl as aceCtrl"}).get('ng-init')
+    ace = bs.find('div', {"ng-controller": "AceCtrl as aceCtrl"}).get('ng-init')
     keys = [triple[1] for triple in re.findall(r"(\'|\")(.*?)(\1)", ace)]
     code = keys[keys.index('defaultCode', keys.index(lang)) + 1].encode().decode('unicode_escape')
     code += '# TODO\n' + ' ' * 8 + 'return'
