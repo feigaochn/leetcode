@@ -60,27 +60,53 @@
 #         self.left = None
 #         self.right = None
 
+from utils import TreeNode, build_binary_tree
+
+print(build_binary_tree([1, 2, 3, None, None, 4, None, None, 5]))
+
+
 class Solution(object):
     def isSymmetric(self, root):
         """
         :type root: TreeNode
         :rtype: bool
         """
-        # TODO
-        return
+
+        def rotate(node):
+            if node is not None:
+                node.left, node.right = rotate(node.right), rotate(node.left)
+            return node
+
+        def is_same(node1, node2):
+            if node1 is None and node2 is None:
+                return True
+            elif node1 is None or node2 is None:
+                return False
+            else:
+                return (node1.val == node2.val
+                        and is_same(node1.left, node2.left)
+                        and is_same(node1.right, node2.right))
+
+        if root is None:
+            return True
+        left = root.left
+        right = rotate(root.right)
+
+        return is_same(left, right)
 
 
 def main():
     solver = Solution()
     tests = [
-        (('param',), 'result'),
+        ((build_binary_tree([1,2,2]),),True ),
+        ((build_binary_tree([1,2,2,None,3,None,3]),),False)
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
         print('Input:  ' + str(params))
         print('Expect: ' + str(expect))
 
-        result = solver.__init__(*params)
+        result = solver.isSymmetric(*params)
         print('Result: ' + str(result))
     pass
 
