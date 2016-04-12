@@ -33,13 +33,16 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        # TODO
+        for i, n in enumerate(nums):
+            if ((i == 0 or (i > 0 and n > nums[i-1]))
+                and (i == len(nums)-1 or (i < len(nums) - 1 and n > nums[i+1]))):
+                return i
 
 
 def main():
     solver = Solution()
     tests = [
-        (([1, 2, 3, 1],), 3),
+        (([1, 2, 3, 1],), 2),
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)

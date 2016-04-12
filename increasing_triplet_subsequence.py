@@ -37,7 +37,6 @@ class Solution(object):
         :type nums: List[int]
         :rtype: bool
         """
-        # TODO
         if len(nums) < 3:
             return False
         dp = [nums[0]]
