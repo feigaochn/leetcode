@@ -32,14 +32,23 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        # TODO
-        return
+        bounds = {}
+        best = 0
+        for n in nums:
+            if n in bounds:
+                continue
+            lo = bounds.get(n-1, (n, n))[0]
+            hi = bounds.get(n+1, (n, n))[1]
+            bounds[lo] = bounds[hi] = bounds[n] = (lo, hi)
+            best = max(best, hi - lo + 1)
+            # print(n, bounds)
+        return best
 
 
 def main():
     solver = Solution()
     tests = [
-        (('param',), 'result'),
+        (([100, 4, 200, 1, 3, 2],), '4'),
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
