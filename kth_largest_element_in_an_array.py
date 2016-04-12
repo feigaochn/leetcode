@@ -30,14 +30,19 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
-        # TODO
-        return
+        nums = [i * -1 for i in nums]
+        import heapq
+        heapq.heapify(nums)
+        while k:
+            result = heapq.heappop(nums)
+            k -= 1
+        return result * -1
 
 
 def main():
     solver = Solution()
     tests = [
-        (('param',), 'result'),
+        (([3,2,1,5,6,4], 2), 5),
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
