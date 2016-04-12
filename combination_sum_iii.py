@@ -43,7 +43,6 @@ class Solution(object):
         :type n: int
         :rtype: List[List[int]]
         """
-        # TODO
         solutions = []
 
         def sol(lo, k, n, ps):

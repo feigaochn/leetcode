@@ -33,14 +33,21 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        # TODO
-        return
+        n = len(nums)
+        if n < 2: return n
+        dp = [1] * n
+        for i in range(1, n):
+            for j in range(i):
+                if nums[j] < nums[i]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+
+        return max(dp)
 
 
 def main():
     solver = Solution()
     tests = [
-        (('param',), 'result'),
+        (([10, 9, 2, 5, 3, 7, 101, 18],), 4),
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
