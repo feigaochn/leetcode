@@ -107,7 +107,7 @@ class PeekingIterator(object):
 # iter = PeekingIterator(Iterator(nums))
 # while iter.hasNext():
 #     val = iter.peek()   # Get the next element but not advance the iterator.
-#     iter.next()         # Should return the same value as [val].# TODO
+#     iter.next()         # Should return the same value as [val].
 
 
 def main():
