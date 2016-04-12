@@ -41,12 +41,13 @@
 
 
 # Definition for binary tree with next pointer.
-# class TreeLinkNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-#         self.next = None
+class TreeLinkNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+        self.next = None
+
 
 class Solution(object):
     def connect(self, root):
@@ -54,22 +55,43 @@ class Solution(object):
         :type root: TreeLinkNode
         :rtype: nothing
         """
-        # TODO
-        return
+
+        def first_child(node):
+            return (None if node is None else
+                    node.left if node.left is not None else
+                    node.right if node.right is not None else
+                    first_child(node.next) if node.next is not None else
+                    None)
+
+        def work(node):
+            if node is None:
+                pass
+            elif node.left is not None and node.right is not None:
+                node.left.next = node.right
+                node.right.next = first_child(node.next)
+                return [node.left, node.right]
+            elif node.left is not None and node.right is None:
+                node.left.next = first_child(node.next)
+                return [node.left]
+            elif node.left is None and node.right is not None:
+                node.right.next = first_child(node.next)
+                return [node.right]
+            else:
+                return []
+
+        queue = [root]
+        while queue:
+            top = queue.pop(0)
+            queue.extend(work(top))
 
 
 def main():
     solver = Solution()
-    tests = [
-        (('param',), 'result'),
-    ]
-    for params, expect in tests:
-        print('-' * 5 + 'TEST' + '-' * 5)
-        print('Input:  ' + str(params))
-        print('Expect: ' + str(expect))
-
-        result = solver.__init__(*params)
-        print('Result: ' + str(result))
+    from utils import build_binary_tree
+    tree = build_binary_tree([1,2,3,4,5,None, 7])
+    print(tree)
+    solver.connect(tree)
+    print(tree)
     pass
 
 
