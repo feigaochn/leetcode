@@ -48,6 +48,7 @@ class Stack(object):
         """
         initialize your data structure here.
         """
+        self.data = []
         
 
     def push(self, x):
@@ -55,26 +56,28 @@ class Stack(object):
         :type x: int
         :rtype: nothing
         """
+        self.data.append(x)
         
 
     def pop(self):
         """
         :rtype: nothing
         """
+        self.data.pop()
         
 
     def top(self):
         """
         :rtype: int
         """
+        return self.data[-1]
         
 
     def empty(self):
         """
         :rtype: bool
         """
-        # TODO
-        return
+        return len(self.data) == 0
 
 
 def main():
