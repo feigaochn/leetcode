@@ -36,7 +36,6 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        # TODO
         if head is None or head.next is None:
             return head
         # swap first two

@@ -1,4 +1,3 @@
-# todo: in-plate
 class Solution:
     # @param nums, a list of integer
     # @param k, num of steps
