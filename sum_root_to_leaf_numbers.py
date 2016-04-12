@@ -45,21 +45,35 @@ class Solution(object):
         :type root: TreeNode
         :rtype: int
         """
-        # TODO
-        return
+        nums = []
+        def t(node, pre):
+            if node is None:
+                pass
+            elif node.left is None and node.right is None:
+                # leaf
+                nums.append(pre * 10 + node.val)
+            else:
+                if node.left is not None:
+                    t(node.left, pre * 10 + node.val)
+                if node.right is not None:
+                    t(node.right, pre * 10 + node.val)
+        t(root, 0)
+        # print(nums)
+        return sum(nums)
 
 
 def main():
     solver = Solution()
+    from utils import build_binary_tree
     tests = [
-        (('param',), 'result'),
+        ((build_binary_tree([1,2,3]),), 25),
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
         print('Input:  ' + str(params))
         print('Expect: ' + str(expect))
 
-        result = solver.__init__(*params)
+        result = solver.sumNumbers(*params)
         print('Result: ' + str(result))
     pass
 
