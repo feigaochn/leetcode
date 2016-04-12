@@ -34,14 +34,19 @@ class Solution(object):
         :type height: List[int]
         :rtype: int
         """
-        # TODO
-        return
+        n = len(height)
+        left = height[::]
+        right = height[::]
+        for i in range(1, n):
+            left[i] = max(left[i - 1], height[i - 1])
+            right[n - i - 1] = max(right[n - i], height[n - i])
+        return sum(max(0, min(left[i], right[i]) - height[i]) for i in range(n))
 
 
 def main():
     solver = Solution()
     tests = [
-        (('param',), 'result'),
+        (([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1],), 6),
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
