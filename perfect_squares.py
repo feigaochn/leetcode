@@ -33,14 +33,30 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        # TODO
-        return
+        ans = {0: 0}
+        frontier = [0]
+        while True:
+            top = frontier.pop(0)
+            cur = ans[top]
+            x = 0
+            while True:
+                x += 1
+                val = top + x * x
+                if val == n:
+                    return cur + 1
+                elif val > n:
+                    break
+                else:
+                    if val not in ans:
+                        ans[val] = cur + 1
+                        frontier.append(val)
 
 
 def main():
     solver = Solution()
     tests = [
-        (('param',), 'result'),
+        ((12,), 3),
+        ((13,), 2)
     ]
     for params, expect in tests:
         print('-' * 5 + 'TEST' + '-' * 5)
