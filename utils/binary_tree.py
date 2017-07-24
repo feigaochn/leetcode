@@ -12,8 +12,23 @@ class TreeNode(object):
     def pre_order(self):
         return '[{}, {}, {}]'.format(self.val, self.left, self.right)
 
+    def tree2str(self, t):
+        if t is None:
+            return ''
+        s = str(t.val)
+        left = self.tree2str(t.left)
+        right = self.tree2str(t.right)
+        if left and right:
+            return '{}({})({})'.format(s, left, right)
+        if not left and right:
+            return '{}({})({})'.format(s, left, right)
+        if left and not right:
+            return '{}({})'.format(s, left)
+        return s
+
     def __str__(self):
-        return self.pre_order()
+        # return self.pre_order()
+        return self.tree2str(self)
 
     def __repr__(self):
         return self.__str__()
