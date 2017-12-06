@@ -6,24 +6,26 @@
 # Note: All inputs will be in lower-case.
 
 import collections
-import itertools
 
 
 class Solution:
-    # @param strs, a list of strings
-    # @return a list of strings
-    def anagrams(self, strs):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
         dic = collections.defaultdict(list)
         for s in strs:
             dic[''.join(sorted(s))].append(s)
-        return list(itertools.chain(*[s for s in dic.values() if len(s) > 1]))
+        return list(dic.values())
 
 
 def main():
     solver = Solution()
-    tests = [['aba', 'bab'], ['abc', 'cba'], ['aab', 'aba', 'bab', 'bba']]
+    tests = [['aba', 'bab'], ['abc', 'cba'], ['aab', 'aba', 'bab', 'bba'],
+        ["eat","tea","tan","ate","nat","bat"]]
     for test in tests:
-        result = solver.anagrams(test)
+        result = solver.groupAnagrams(test)
         print(test, ' ->\n', result)
     pass
 
