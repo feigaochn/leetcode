@@ -34,19 +34,19 @@ class Solution:
             node_in[n2].add(n1)
             node_out[n1].add(n2)
         found = list()
-        todo = list()
+        frontier = list()
         for n in range(numCourses):
             if not node_in[n]:
-                todo.append(n)
+                frontier.append(n)
 
-        while todo:
+        while frontier:
             # find a node with zero in-degree
-            n = todo.pop()
+            n = frontier.pop()
             found.append(n)
             for m in node_out[n]:
                 node_in[m].remove(n)
                 if not node_in[m]:
-                    todo.append(m)
+                    frontier.append(m)
             node_out[n] = set()
 
         return found if len(found) == numCourses else []

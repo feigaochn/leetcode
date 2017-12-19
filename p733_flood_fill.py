@@ -8,16 +8,16 @@ class Solution:
         :rtype: List[List[int]]
         """
         old_color = image[sr][sc]
-        todo = [(sr, sc)]
-        while todo:
-            r, c = todo.pop()
+        frontier = [(sr, sc)]
+        while frontier:
+            r, c = frontier.pop()
             image[r][c] = newColor
-            for dr, dc in [(0,1), (0,-1), (1,0), (-1,0)]:
+            for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 nr, nc = r + dr, c + dc
                 if (0 <= nr < len(image) and 0 <= nc < len(image[0])
-                    and image[nr][nc] == old_color
-                    and image[nr][nc] != newColor):
-                    todo.append((nr, nc))
+                        and image[nr][nc] == old_color
+                        and image[nr][nc] != newColor):
+                    frontier.append((nr, nc))
         return image
 
 
