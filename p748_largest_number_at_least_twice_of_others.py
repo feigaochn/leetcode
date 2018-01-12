@@ -4,8 +4,10 @@ class Solution:
         :type nums: List[int]
         :rtype: int
         """
-        if len(nums) < 2:
+        if not nums:
             return -1
+        elif len(nums) == 1:
+            return 0
         first, second = nums[:2]
         large_idx = 0
         if first < second:
