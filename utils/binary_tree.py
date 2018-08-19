@@ -2,28 +2,33 @@
 Common utilities on binary tree
 """
 
+__all__ = ["null", "TreeNode", "build_binary_tree"]
+
+null = None
+
 
 class TreeNode(object):
+
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
     def pre_order(self):
-        return '[{}, {}, {}]'.format(self.val, self.left, self.right)
+        return "[{}, {}, {}]".format(self.val, self.left, self.right)
 
     def tree2str(self, t):
         if t is None:
-            return ''
+            return ""
         s = str(t.val)
         left = self.tree2str(t.left)
         right = self.tree2str(t.right)
         if left and right:
-            return '{}({})({})'.format(s, left, right)
+            return "{}({})({})".format(s, left, right)
         if not left and right:
-            return '{}({})({})'.format(s, left, right)
+            return "{}({})({})".format(s, left, right)
         if left and not right:
-            return '{}({})'.format(s, left)
+            return "{}({})".format(s, left)
         return s
 
     def __str__(self):
